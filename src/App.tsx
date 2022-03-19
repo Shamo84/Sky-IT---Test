@@ -1,24 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { fetchComments, fetchPosts, fetchUsers } from './Server';
 import { Container } from './container/Container.styled';
 import { Button } from './stories/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { ActionCreators, State } from './state';
+import { bindActionCreators } from 'redux';
 
 function App() {
-  const [users, setUsers] = useState<any>([]);
-  const [posts, setPosts] = useState([]);
-  const [comments, setComments] = useState([]);
+  const dispatch = useDispatch();
+  const users = useSelector((state: State) => state.users);
+  const { updateUsers } = bindActionCreators(ActionCreators, dispatch);
 
   useEffect(() => {
-    fetchUsers().then((users) => setUsers(users));
-    fetchPosts().then((posts) => setPosts(posts));
-    fetchComments().then((comments) => setComments(comments));
+    fetchUsers()
+      .then(result => updateUsers(result))
+      .then(() => {
+        console.log(users);
+      });
+    /*
+    fetchPosts().then(posts => setPosts(posts));
+    fetchComments().then(comments => setComments(comments)); */
   }, []);
 
   return (
     <Container>
-      ciao
-      <Button label="ciao" />
+      {users[0] &&
+        users.map((user: any) => {
+          return <div>{user.name}</div>;
+        })}
+      <Button label='ciao' />
     </Container>
   );
 }
