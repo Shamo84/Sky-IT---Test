@@ -7,6 +7,7 @@ import { updateUsers } from './features/usersSlice';
 import { updatePosts } from './features/postsSlice';
 import { updateComments } from './features/commentsSlice';
 import { RootState } from './app/store';
+import { Apollo } from './components/Apollo';
 
 function App() {
   const [userdetails, setUserdetails] = useState('');
@@ -31,11 +32,11 @@ function App() {
         <ul>
           {users.map((user: any) => {
             return user.id === userdetails ? (
-              <li onClick={() => setUserdetails('')}>
+              <li key={user.id} onClick={() => setUserdetails('')}>
                 <ul>
-                  {Object.keys(user).map(key => {
+                  {Object.keys(user).map((key, index) => {
                     return (
-                      <li>
+                      <li key={index}>
                         <b>{key}:</b> {user[key]}
                       </li>
                     );
@@ -43,7 +44,9 @@ function App() {
                 </ul>
               </li>
             ) : (
-              <li onClick={() => setUserdetails(user.id)}>{user.name}</li>
+              <li key={user.id} onClick={() => setUserdetails(user.id)}>
+                {user.name}
+              </li>
             );
           })}
         </ul>
@@ -53,11 +56,11 @@ function App() {
         <ul>
           {posts.map((post: any) => {
             return post.id === postdetails ? (
-              <li onClick={() => setPostdetails('')}>
+              <li key={post.id} onClick={() => setPostdetails('')}>
                 <ul>
-                  {Object.keys(post).map(key => {
+                  {Object.keys(post).map((key, index) => {
                     return (
-                      <li>
+                      <li key={index}>
                         <b>{key}:</b> {post[key]}
                       </li>
                     );
@@ -65,7 +68,9 @@ function App() {
                 </ul>
               </li>
             ) : (
-              <li onClick={() => setPostdetails(post.id)}>{post.title}</li>
+              <li key={post.id} onClick={() => setPostdetails(post.id)}>
+                {post.title}
+              </li>
             );
           })}
         </ul>
@@ -75,11 +80,11 @@ function App() {
         <ul>
           {comments.map((comment: any) => {
             return comment.id === commentdetails ? (
-              <li onClick={() => setCommentdetails('')}>
+              <li key={comment.id} onClick={() => setCommentdetails('')}>
                 <ul>
-                  {Object.keys(comment).map(key => {
+                  {Object.keys(comment).map((key, index) => {
                     return (
-                      <li>
+                      <li key={index}>
                         <b>{key}:</b> {comment[key]}
                       </li>
                     );
@@ -87,13 +92,17 @@ function App() {
                 </ul>
               </li>
             ) : (
-              <li onClick={() => setCommentdetails(comment.id)}>
+              <li
+                key={comment.id}
+                onClick={() => setCommentdetails(comment.id)}
+              >
                 {comment.body}
               </li>
             );
           })}
         </ul>
       </List>
+      <Apollo />
     </Container>
   );
 }
